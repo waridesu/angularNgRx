@@ -1,9 +1,9 @@
 <div class="auth-page">
   <div class="container page">
     <div class="col-md-6 offset-md-3 col=xs-12">
-      <h1 class="text-xs-center">Sign Up</h1>
+      <h1 class="text-xs-center">Sign In</h1>
       <p class="text-xs-center">
-        <a [routerLink]="['/login']">Have an account?</a>
+        <a [routerLink]="['/register']">Need an account?</a>
       </p>
       <app-backend-error-messages
         *ngIf="backendErrors$ | async"
@@ -11,13 +11,6 @@
       </app-backend-error-messages>
       <form *ngIf="form" [formGroup]="form" (ngSubmit)="onSubmit()" >
         <fieldset>
-          <fieldset class="form-group">
-            <input
-              type="text"
-              class="form-control form-control-lg"
-              placeholder="Username"
-              formControlName="username"/>
-          </fieldset>
           <fieldset class="form-group">
             <input
               type="text"
@@ -32,7 +25,7 @@
               placeholder="Password"
               formControlName="password"/>
           </fieldset>
-          <button class="btn btn-lg btn-primary pull-xs-right" type="submit" [disabled]="isSubmitting$ | async">Sign up</button>
+          <button class="btn btn-lg btn-primary pull-xs-right" type="submit" [disabled]="isSubmitting$ | async">Sign in</button>
         </fieldset>
       </form>
     </div>

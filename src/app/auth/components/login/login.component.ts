@@ -1,27 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, NonNullableFormBuilder, Validators } from "@angular/forms";
 import { select, Store } from "@ngrx/store";
-import { registerAction } from "../../store/actions/register.action";
 import { Observable } from "rxjs";
 import { isSubmittingSelector, validationErrorsSelector } from "../../store/selector";
 import { AuthService } from "../../services/auth.service";
 import { CurrentUserInterface } from "../../../shared/current-user.interface";
-import { RegisterRequestInterface } from "../../types/register-request.interface";
 import { BackendErrorsInterface } from "../../../shared/types/backend-errors.interface";
+import { LoginRequestInterface } from "../../types/login-request.interface";
+import { loginAction } from "../../store/actions/login.action";
 
 
 interface RegisterForm {
-  username: FormControl<string>
   email: FormControl<string>
   password: FormControl<string>
 }
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.scss']
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.scss']
 })
-export class RegisterComponent implements OnInit {
+export class LoginComponent implements OnInit {
   form: FormGroup<RegisterForm> | undefined;
   isSubmitting$: Observable<boolean> | undefined;
   backendErrors$: Observable<BackendErrorsInterface | null> | undefined;
@@ -38,7 +37,6 @@ export class RegisterComponent implements OnInit {
 
   formInit(): void {
     this.form = this.fb.group({
-      username: ['', Validators.required],
       email: ['', Validators.required],
       password: ['', Validators.required]
     })
@@ -53,17 +51,16 @@ export class RegisterComponent implements OnInit {
     const formValue = this.form?.value;
 
     if (formValue && this.form?.valid) {
-      const request: RegisterRequestInterface = {
+      const request: LoginRequestInterface = {
         user : {
-          username: formValue.username || '',
           email: formValue.email || '',
           password: formValue.password || ''
         }
 
       };
 
-      this.store.dispatch(registerAction({request}));
-      this.authService.register(request).subscribe((currentUser: CurrentUserInterface) => {
+      this.store.dispatch(loginAction({request}));
+      this.authService.login(request).subscribe((currentUser: CurrentUserInterface) => {
         console.log('currentUser', currentUser);
       });
     }
