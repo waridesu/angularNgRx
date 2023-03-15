@@ -60,9 +60,7 @@ export class LoginComponent implements OnInit {
       };
 
       this.store.dispatch(loginAction({request}));
-      this.authService.login(request).subscribe((currentUser: CurrentUserInterface) => {
-        console.log('currentUser', currentUser);
-      });
+
     }
   }
 }

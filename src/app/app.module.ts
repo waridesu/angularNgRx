@@ -1,15 +1,19 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { RouterModule } from "@angular/router";
-import { ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from '@angular/router';
+import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
-import { AuthModule } from "./auth/auth.module";
-import { StoreModule } from "@ngrx/store";
+import { AuthModule } from './auth/auth.module';
+import { StoreModule } from '@ngrx/store';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from "../environments/environment";
-import { HttpClientModule } from "@angular/common/http";
-import { EffectsModule } from "@ngrx/effects";
+import { environment } from '../environments/environment';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { EffectsModule } from '@ngrx/effects';
+import { TopBarComponent } from './shared/components/top-bar/top-bar.component';
+import { PersistenceService } from "./shared/services/persistence.service";
+import { AuthInterceptor } from "./shared/services/auth-interceptor.service";
+import { GlobalFeedModule } from "./global-feed/global-feed.module";
 
 
 @NgModule({
@@ -31,8 +35,18 @@ import { EffectsModule } from "@ngrx/effects";
       trace: false,
       traceLimit: 75,
     }),
+    TopBarComponent,
+    GlobalFeedModule
   ],
-  providers: [],
+  providers: [
+    PersistenceService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule {}
+export class AppModule {
+}
